@@ -12,11 +12,13 @@ from opensubmarine.utils.algorand import require_payment
 from opensubmarine.utils.types import Bytes32, Bytes8
 
 
-class HelloWorld(ARC200Token):
+class HelloWorld(ARC200Token): # inherited classes (only one right now)
     """
-    A simple Hello World smart contract that inherits from Ownable.
+    Basic ARC200 Token
     """
 
+    # The constructor. We have to make sure we include all the inherited class states
+    # I don't recommend super().__init__(self) Yuck!
     def __init__(self) -> None:
         # arc200 state
         self.name = String()
@@ -24,27 +26,9 @@ class HelloWorld(ARC200Token):
         self.decimals = UInt64()
         self.totalSupply = BigUInt()
 
-    @arc4.abimethod
-    def hello_world(self) -> String:
-        return String("Hello, World!")
-
-    @arc4.abimethod
-    def hello_you(self, you: String) -> String:
-        return "Hello, " + you
-
-    @arc4.abimethod
-    def hello_you_again(self, you: String, depth: UInt64) -> String:
-        return "Hello, " + self.repeat(you, depth)
-
-    @subroutine
-    def repeat(self, you: String, depth: UInt64) -> String:
-        if depth == 0:
-            return String("")
-        elif depth == 1:
-            return you
-        else:
-            return you + ", " + self.repeat(you, depth - 1)
-
+    # The arc200 spec doesn't have a method mint the tokens so we have to
+    # add one. Set attributes and transfer all tokens to receive. Looks good
+    # if you ask me.
     @arc4.abimethod
     def mint(
         self,
@@ -76,3 +60,7 @@ class HelloWorld(ARC200Token):
                 totalSupply,
             )
         )
+
+    # all arc200 methods are provided by opensubmarine
+    # override if neccesary
+    # ex) to make non transferable method override transfer method ect.
