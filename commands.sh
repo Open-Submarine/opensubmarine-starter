@@ -50,13 +50,14 @@ generate_clients() {
   pipenv run algokit compile py \
     --out-dir artifacts \
     src/contract.py 
-  local artifact
-  local artifacts=("HelloWorld")
-  for artifact in "${artifacts[@]}"; do
-    pipenv run algokit generate client "src/artifacts/${artifact}.arc32.json" \
-      --version 3.0.0 \
-      --language typescript \
-      --output "src/scripts/clients/${artifact}Client.ts"
-    jq '.contract' "src/artifacts/${artifact}.arc32.json" > "src/artifacts/${artifact,,}.contract.json"
-  done
+  # TODO fix me
+  # local artifact
+  # local artifacts=("HelloWorld")
+  # for artifact in "${artifacts[@]}"; do
+  #   pipenv run algokit generate client "src/artifacts/${artifact}.arc32.json" \
+  #     --version 3.0.0 \
+  #     --language typescript \
+  #     --output "src/scripts/clients/${artifact}Client.ts"
+  #   jq '.contract' "src/artifacts/${artifact}.arc32.json" > "src/artifacts/${artifact,,}.contract.json"
+  # done
 }
