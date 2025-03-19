@@ -1,43 +1,22 @@
 from algopy import (
-    Global,
-    String,
-    arc4,
     subroutine,
-    UInt64,
+    Bytes,
 )
-from opensubmarine import Ownable
+from opensubmarine import ARC73SupportsInterface
 
 # See implementation of Ownable:
 # https://github.com/Open-Submarine/opensubmarine-contracts/blob/main/src/opensubmarine/contracts/access/Ownable/contract.py
 # Ownable class methods and subroutines are available to HelloWorld and by be overridden in HelloWorld
 
-class HelloWorld(Ownable):
+class HelloWorld(ARC73SupportsInterface):
     """
-    A simple Hello World smart contract that inherits from Ownable.
+    A simple example of a contract that overrides the _supportsInterface method.
     """
 
-    def __init__(self) -> None:
-        # ownable state
-        # Ownable has owner state which we must initialize
-        self.owner = Global.creator_address  # set owner to creator
-
-    @arc4.abimethod
-    def hello_world(self) -> String:
-        return String("Hello, World!")
-
-    @arc4.abimethod
-    def hello_you(self, you: String) -> String:
-        return "Hello, " + you
-
-    @arc4.abimethod
-    def hello_you_again(self, you: String, depth: UInt64) -> String:
-        return "Hello, " + self.repeat(you, depth)
-
+    # arc73 override
     @subroutine
-    def repeat(self, you: String, depth: UInt64) -> String:
-        if depth == 0:
-            return String("")
-        elif depth == 1:
-            return you
+    def _supportsInterface(self, interface_id: Bytes) -> bool:
+        if interface_id == Bytes.from_hex("10101010"):  # HelloWorld interface
+            return True
         else:
-            return you + ", " + self.repeat(you, depth - 1)
+            return super()._supportsInterface(interface_id)

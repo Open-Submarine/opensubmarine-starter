@@ -1,3 +1,4 @@
 artifacts
 .coverage
 .python-version
+.DS_Store
