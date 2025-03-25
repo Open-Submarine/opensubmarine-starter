@@ -7,7 +7,7 @@ verify_ssl = true
 algokit = "==2.3.0"
 puyapy = "==3.0.3"
 pytest-cov = "*"
-opensubmarine = {file = "../opensubmarine-contracts", editable = true}
+opensubmarine = "==0.1.19"
 
 [dev-packages]
 pytest = "*"
