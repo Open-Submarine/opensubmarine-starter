@@ -1,43 +1,66 @@
 from algopy import (
     Global,
-    String,
+    Account,
+    BigUInt,
+    Bytes,
+    Txn,
     arc4,
     subroutine,
-    UInt64,
 )
-from opensubmarine import Ownable
+from opensubmarine import ARC72Token, arc72_nft_data, arc72_Transfer
+from opensubmarine.utils.algorand import require_payment
+from opensubmarine.utils.types import Bytes256
 
-# See implementation of Ownable:
-# https://github.com/Open-Submarine/opensubmarine-contracts/blob/main/src/opensubmarine/contracts/access/Ownable/contract.py
-# Ownable class methods and subroutines are available to HelloWorld and by be overridden in HelloWorld
+mint_fee = 0
+mint_cost = 336700
 
-class HelloWorld(Ownable):
+
+class HelloWorld(ARC72Token):
     """
     A simple Hello World smart contract that inherits from Ownable.
     """
 
     def __init__(self) -> None:
-        # ownable state
-        # Ownable has owner state which we must initialize
-        self.owner = Global.creator_address  # set owner to creator
+        super().__init__()  # call ARC72Token constructor
 
     @arc4.abimethod
-    def hello_world(self) -> String:
-        return String("Hello, World!")
-
-    @arc4.abimethod
-    def hello_you(self, you: String) -> String:
-        return "Hello, " + you
-
-    @arc4.abimethod
-    def hello_you_again(self, you: String, depth: UInt64) -> String:
-        return "Hello, " + self.repeat(you, depth)
+    def mint(
+        self,
+        to: arc4.Address,
+        tokenId: arc4.UInt256,
+        metadata: Bytes256,
+    ) -> arc4.UInt256:
+        """
+        Mint a new NFT
+        """
+        return arc4.UInt256(self._mint(to.native, tokenId.native, metadata.bytes))
 
     @subroutine
-    def repeat(self, you: String, depth: UInt64) -> String:
-        if depth == 0:
-            return String("")
-        elif depth == 1:
-            return you
-        else:
-            return you + ", " + self.repeat(you, depth - 1)
+    def _mint(self, to: Account, tokenId: BigUInt, metadata: Bytes) -> BigUInt:
+        # TODO require auth to mint
+        nft_data = self._nft_data(tokenId)
+        assert nft_data.index == 0, "token must not exist"
+        payment_amount = require_payment(Txn.sender)
+        assert payment_amount >= mint_cost + mint_fee, "payment amount accurate"
+        # TODO transfer mint_fee to treasury
+        index = arc4.UInt256(
+            self._increment_counter()
+        ).native  # BigUInt to BigUInt(UInt256)
+        self._increment_totalSupply()
+        self.nft_index[index] = tokenId
+        self.nft_data[tokenId] = arc72_nft_data(
+            owner=arc4.Address(to),
+            approved=arc4.Address(Global.zero_address),
+            index=arc4.UInt256(index),
+            token_id=arc4.UInt256(tokenId),
+            metadata=Bytes256.from_bytes(metadata),
+        )
+        self._holder_increment_balance(to)
+        arc4.emit(
+            arc72_Transfer(
+                arc4.Address(Global.zero_address),
+                arc4.Address(to),
+                arc4.UInt256(tokenId),
+            )
+        )
+        return index

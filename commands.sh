@@ -46,3 +46,17 @@ mocha() {
     }
   )
 }
+generate_clients() {
+  algokit compile py \
+    --out-dir artifacts \
+    src/contract.py 
+  local artifact
+  local artifacts=("HelloWorld")
+  for artifact in "${artifacts[@]}"; do
+    algokit generate client "artifacts/${artifact}.arc32.json" \
+      --version 3.0.0 \
+      --language typescript \
+      --output "src/scripts/clients/${artifact}Client.ts"
+    jq '.contract' "artifacts/${artifact}.arc32.json" > "artifacts/${artifact}.contract.json"
+  done
+}
