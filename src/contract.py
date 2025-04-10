@@ -2,7 +2,6 @@ from algopy import (
     Global,
     String,
     arc4,
-    subroutine,
     UInt64,
     BigUInt,
     Txn,
@@ -12,9 +11,9 @@ from opensubmarine.utils.algorand import require_payment
 from opensubmarine.utils.types import Bytes32, Bytes8
 
 
-class HelloWorld(ARC200Token):
+class AToken(ARC200Token):
     """
-    A simple Hello World smart contract that inherits from Ownable.
+    A simple ARC200 token contract.
     """
 
     def __init__(self) -> None:
@@ -23,27 +22,6 @@ class HelloWorld(ARC200Token):
         self.symbol = String()
         self.decimals = UInt64()
         self.totalSupply = BigUInt()
-
-    @arc4.abimethod
-    def hello_world(self) -> String:
-        return String("Hello, World!")
-
-    @arc4.abimethod
-    def hello_you(self, you: String) -> String:
-        return "Hello, " + you
-
-    @arc4.abimethod
-    def hello_you_again(self, you: String, depth: UInt64) -> String:
-        return "Hello, " + self.repeat(you, depth)
-
-    @subroutine
-    def repeat(self, you: String, depth: UInt64) -> String:
-        if depth == 0:
-            return String("")
-        elif depth == 1:
-            return you
-        else:
-            return you + ", " + self.repeat(you, depth - 1)
 
     @arc4.abimethod
     def mint(

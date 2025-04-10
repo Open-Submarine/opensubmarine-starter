@@ -51,7 +51,7 @@ generate_clients() {
     --out-dir artifacts \
     src/contract.py 
   local artifact
-  local artifacts=("HelloWorld")
+  local artifacts=("AToken")
   for artifact in "${artifacts[@]}"; do
     pipenv run algokit generate client "src/artifacts/${artifact}.arc32.json" \
       --version 3.0.0 \
