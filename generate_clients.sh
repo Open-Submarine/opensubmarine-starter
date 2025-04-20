@@ -3,6 +3,7 @@
 generate_clients() {
   algokit compile py \
     --out-dir /artifacts \
+    --output-arc56 \
     /src/src/contract.py 
   local artifact
   local artifacts=("AToken")

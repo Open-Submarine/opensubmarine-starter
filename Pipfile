@@ -4,10 +4,10 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [packages]
-algokit = "==2.3.0"
-puyapy = "==3.0.3"
 pytest-cov = "*"
 opensubmarine = "==0.1.19"
+algokit = "==2.6.2"
+puyapy = "*"
 
 [dev-packages]
 pytest = "*"

@@ -49,6 +49,7 @@ mocha() {
 generate_clients() {
   pipenv run algokit compile py \
     --out-dir artifacts \
+    --output-arc56 \
     src/contract.py 
   local artifact
   local artifacts=("AToken")
