@@ -1,0 +1,154 @@
+{
+  "name": "AToken",
+  "desc": "\n    A simple ARC200 token contract.\n    ",
+  "methods": [
+    {
+      "name": "mint",
+      "args": [
+        {
+          "type": "address",
+          "name": "receiver"
+        },
+        {
+          "type": "byte[32]",
+          "name": "name"
+        },
+        {
+          "type": "byte[8]",
+          "name": "symbol"
+        },
+        {
+          "type": "uint8",
+          "name": "decimals"
+        },
+        {
+          "type": "uint256",
+          "name": "totalSupply"
+        }
+      ],
+      "readonly": false,
+      "returns": {
+        "type": "void"
+      },
+      "desc": "Mint tokens"
+    },
+    {
+      "name": "arc200_name",
+      "args": [],
+      "readonly": true,
+      "returns": {
+        "type": "byte[32]"
+      }
+    },
+    {
+      "name": "arc200_symbol",
+      "args": [],
+      "readonly": true,
+      "returns": {
+        "type": "byte[8]"
+      }
+    },
+    {
+      "name": "arc200_decimals",
+      "args": [],
+      "readonly": true,
+      "returns": {
+        "type": "uint8"
+      }
+    },
+    {
+      "name": "arc200_totalSupply",
+      "args": [],
+      "readonly": true,
+      "returns": {
+        "type": "uint256"
+      }
+    },
+    {
+      "name": "arc200_balanceOf",
+      "args": [
+        {
+          "type": "address",
+          "name": "account"
+        }
+      ],
+      "readonly": true,
+      "returns": {
+        "type": "uint256"
+      }
+    },
+    {
+      "name": "arc200_allowance",
+      "args": [
+        {
+          "type": "address",
+          "name": "owner"
+        },
+        {
+          "type": "address",
+          "name": "spender"
+        }
+      ],
+      "readonly": true,
+      "returns": {
+        "type": "uint256"
+      }
+    },
+    {
+      "name": "arc200_transferFrom",
+      "args": [
+        {
+          "type": "address",
+          "name": "sender"
+        },
+        {
+          "type": "address",
+          "name": "recipient"
+        },
+        {
+          "type": "uint256",
+          "name": "amount"
+        }
+      ],
+      "readonly": false,
+      "returns": {
+        "type": "bool"
+      }
+    },
+    {
+      "name": "arc200_transfer",
+      "args": [
+        {
+          "type": "address",
+          "name": "recipient"
+        },
+        {
+          "type": "uint256",
+          "name": "amount"
+        }
+      ],
+      "readonly": false,
+      "returns": {
+        "type": "bool"
+      }
+    },
+    {
+      "name": "arc200_approve",
+      "args": [
+        {
+          "type": "address",
+          "name": "spender"
+        },
+        {
+          "type": "uint256",
+          "name": "amount"
+        }
+      ],
+      "readonly": false,
+      "returns": {
+        "type": "bool"
+      }
+    }
+  ],
+  "networks": {}
+}
